@@ -1,9 +1,9 @@
 import unittest
-import subprocess
 
-from gradescope_utils.autograder_utils.decorators import weight, number
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 
-suite = unittest.defaultTestLoader.discover('tests')
-with open('results.json', 'w') as f:
-    JSONTestRunner(stream=f, verbosity=2, buffer=True).run(suite)
+if __name__ == '__main__':
+    suite = unittest.defaultTestLoader.discover(start_dir='tests', pattern='test*.py')
+
+    with open('/autograder/results/results.json', 'w') as f:
+        JSONTestRunner(stream=f, verbosity=2, buffer=True).run(suite)
