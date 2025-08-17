@@ -16,7 +16,8 @@ apt-get install -y\
     golang\
     python3\
     python3-pip\
-    python3-dev
+    python3-dev\
+    iverilog
 
 # Change the working directory to the `app` directory
 WORKDIR /autograder/grader
