@@ -7,7 +7,7 @@ def test_module(name):
     subprocess.run(executable='iverilog', args=['-o', f'/tmp/{name}_test.vvp', f'/autograder/source/tests/{name}_test.v', f'/autograder/submission/{name}.v'])
 
     ps = subprocess.Popen(executable='vvp', args=[f'/tmp/{name}_test.vvp'], stdout=subprocess.PIPE)
-    out = open(f'/tmp/{name}.out')
+    out = open(f'/tmp/{name}.out', 'w')
     subprocess.run(executable='head', args=['-n', '-1'], stdout=out, stdin=ps.stdout)
     ps.wait()
 
