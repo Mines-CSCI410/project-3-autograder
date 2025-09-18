@@ -3,84 +3,88 @@ import subprocess
 
 from gradescope_utils.autograder_utils.decorators import weight, number
 
-class BasicTest(unittest.TestCase):
-    def test_module(self, name):
-        subprocess.run(f'iverilog -o /tmp/{name}_test.vvp /autograder/source/tests/{name}_test.v /autograder/submission/{name}.v')
-        subprocess.run(f'vvp /tmp/{name}_test.vvp | head -n -1 1> /tmp/{name}.out')
-        res = subprocess.run(f'diff /tmp/{name}.out /autograder/source/tests/expected-outputs/{name}.cmp -qs &> /dev/null')
-        self.assertEqual(res.returncode, 0)
-    
+def test_module(name):
+    subprocess.run(executable='iverilog', args=['-o', f'/tmp/{name}_test.vvp', f'/autograder/source/tests/{name}_test.v', f'/autograder/submission/{name}.v'])
+
+    ps = subprocess.Popen(executable='vvp', args=[f'/tmp/{name}_test.vvp'], stdout=subprocess.PIPE)
+    out = open(f'/tmp/{name}.out')
+    subprocess.run(executable='head', args=['-n', '-1'], stdout=out, stdin=ps.stdout)
+    ps.wait()
+
+    return subprocess.call(executable='diff', args=[f'/tmp/{name}.out', f'/autograder/source/tests/expected-outputs/{name}.cmp', '-qs'])
+
+class BasicTest(unittest.TestCase): 
     @weight(95/15)
     @number(1)
     def test_and(self):
-        self.test_module('and')
+        self.assertEqual(test_module('and'), 0)
 
     @weight(95/15)
     @number(2)
     def test_or(self):
-        self.test_module('or')
+        self.assertEqual(test_module('or'), 0)
 
     @weight(95/15)
     @number(3)
     def test_xor(self):
-        self.test_module('xor')
+        self.assertEqual(test_module('xor'), 0)
 
     @weight(95/15)
     @number(4)
     def test_not(self):
-        self.test_module('not')
+        self.assertEqual(test_module('not'), 0)
 
     @weight(95/15)
     @number(5)
     def test_mux(self):
-        self.test_module('mux')
+        self.assertEqual(test_module('mux'), 0)
 
     @weight(95/15)
     @number(6)
     def test_dmux(self):
-        self.test_module('dmux')
+        self.assertEqual(test_module('dmux'), 0)
     
     @weight(95/15)
     @number(7)
     def test_and16(self):
-        self.test_module('and16')
+        self.assertEqual(test_module('and16'), 0)
     
     @weight(95/15)
     @number(8)
     def test_or16(self):
-        self.test_module('or16')
+        self.assertEqual(test_module('or16'), 0)
     
     @weight(95/15)
     @number(9)
     def test_not16(self):
-        self.test_module('not16')
+        self.assertEqual(test_module('not16'), 0)
 
     @weight(95/15)
     @number(10)
     def test_mux16(self):
-        self.test_module('mux16')
+        self.assertEqual(test_module('mux16'), 0)
     
     @weight(95/15)
     @number(11)
     def test_mux4way16(self):
-        self.test_module('mux4way16')
+        self.assertEqual(test_module('mux4way16'), 0)
     
     @weight(95/15)
     @number(12)
     def test_mux8way16(self):
-        self.test_module('mux8way16')
+        self.assertEqual(test_module('mux8way16'), 0)
     
     @weight(95/15)
     @number(13)
     def test_dmux4way(self):
-        self.test_module('dmux4way')
+        self.assertEqual(test_module('dmux4way'), 0)
     
     @weight(95/15)
     @number(14)
     def test_dmux8way(self):
-        self.test_module('dmux8way')
+        self.assertEqual(test_module('dmux8way'), 0)
     
     @weight(95/15)
     @number(14)
     def test_or8way(self):
-        self.test_module('or8way')
+        self.assertEqual(test_module('or8way'), 0)
