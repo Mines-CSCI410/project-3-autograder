@@ -4,14 +4,14 @@ import subprocess
 from gradescope_utils.autograder_utils.decorators import weight, number
 
 def test_module(name):
-    subprocess.run(executable='iverilog', args=['-o', f'/tmp/{name}_test.vvp', f'/autograder/source/tests/{name}_test.v', f'/autograder/submission/{name}.v'])
+    subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/source/tests/{name}_test.v', f'/autograder/submission/{name}.v'])
 
-    ps = subprocess.Popen(executable='vvp', args=[f'/tmp/{name}_test.vvp'], stdout=subprocess.PIPE)
+    ps = subprocess.Popen(['vvp', f'/tmp/{name}_test.vvp'], stdout=subprocess.PIPE)
     out = open(f'/tmp/{name}.out', 'w')
-    subprocess.run(executable='head', args=['-n', '-1'], stdout=out, stdin=ps.stdout)
+    subprocess.run(['head', '-n', '-1'], stdout=out, stdin=ps.stdout)
     ps.wait()
 
-    return subprocess.call(executable='diff', args=[f'/tmp/{name}.out', f'/autograder/source/tests/expected-outputs/{name}.cmp', '-qs'])
+    return subprocess.call(['diff', f'/tmp/{name}.out', f'/autograder/source/tests/expected-outputs/{name}.cmp', '-qs'])
 
 class BasicTest(unittest.TestCase): 
     @weight(95/15)
