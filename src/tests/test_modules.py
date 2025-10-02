@@ -31,27 +31,42 @@ class TestBase(unittest.TestCase):
             raise AssertionError('Module output does not mach the expected output!')
 
 class TestModules(TestBase): 
-    @weight(95/5)
+    @weight(95/8)
     @number(1)
-    def test_half_adder(self):
-        self.assertModulePasses('half_adder')
+    def test_bit(self):
+        self.assertModulePasses('bit')
 
-    @weight(95/5)
+    @weight(95/8)
     @number(2)
-    def test_full_adder(self):
-        self.assertModulePasses('full_adder')
+    def test_register(self):
+        self.assertModulePasses('register')
 
-    @weight(95/5)
+    @weight(95/8)
     @number(3)
-    def test_add16(self):
-        self.assertModulePasses('add16')
+    def test_ram8(self):
+        self.assertModulePasses('ram8')
 
-    @weight(95/5)
+    @weight(95/8)
     @number(4)
-    def test_inc16(self):
-        self.assertModulePasses('inc16')
+    def test_ram64(self):
+        self.assertModulePasses('ram64')
 
-    @weight(95/5)
+    @weight(95/8)
     @number(5)
-    def test_alu(self):
-        self.assertModulePasses('alu')
+    def test_ram512(self):
+        self.assertModulePasses('ram512')
+
+    @weight(95/8)
+    @number(6)
+    def test_ram4k(self):
+        self.assertModulePasses('ram4k')
+
+    @weight(95/8)
+    @number(7)
+    def test_ram16k(self):
+        self.assertModulePasses('ram16k')
+
+    @weight(95/8)
+    @number(8)
+    def test_pc(self):
+        self.assertModulePasses('pc')

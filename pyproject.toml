@@ -1,5 +1,5 @@
 [project]
-name = "project-2-autograder"
+name = "project-3-autograder"
 version = "0.1.0"
 description = "verifies each submitted module"
 readme = "README.md"
