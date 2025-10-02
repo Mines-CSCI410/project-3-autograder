@@ -1,1 +1,1 @@
-# Autograder For Project 1 Verilog Gates
+# Autograder For Project 2 Verilog Modules

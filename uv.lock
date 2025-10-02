@@ -12,7 +12,7 @@ wheels = [
 ]
 
 [[package]]
-name = "project-1-autograder"
+name = "project-2-autograder"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

@@ -1,7 +1,7 @@
 [project]
-name = "project-1-autograder"
+name = "project-2-autograder"
 version = "0.1.0"
-description = "verifies each submitted gate"
+description = "verifies each submitted module"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

@@ -4,7 +4,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 pushd ${SCRIPT_DIR} &> /dev/null
 
-TESTS=("and" "and16" "dmux" "dmux4way" "dmux8way" "mux" "mux4way16" "mux8way16" "mux16" "not" "not16" "or" "or8way" "or16" "xor")
+TESTS=("half_adder")
 
 for TEST in ${TESTS[@]};
 do
