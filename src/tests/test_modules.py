@@ -1,3 +1,4 @@
+import re
 import unittest
 import subprocess
 from os import path
@@ -9,13 +10,18 @@ class TestBase(unittest.TestCase):
         if not path.isfile(f'/autograder/source/{name}.v'):
             raise AssertionError(f'{name}.v not found!')
 
+        with open(f'/autograder/source/{name}.v', 'r') as f:
+            if not re.search(pattern=f'module student_{name}', string=f.read()):
+                raise AssertionError(f'Module student_{name} not defined in {name}.v!')
+
         subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', f'/autograder/source/{name}.v'])
 
         out = open(f'/tmp/{name}.out', 'w')
         subprocess.call(['vvp', f'/tmp/{name}_test.vvp'], stdout=out)
 
         res = subprocess.call(['diff', f'/tmp/{name}.out', f'/autograder/grader/tests/expected-outputs/{name}.cmp', '-qs', '--strip-trailing-cr'])
-        self.assertEqual(res, 0)
+        if res != 0:
+            raise AssertionError('Module output does not mach the expected output!')
 
 class TestModules(TestBase): 
     @weight(95/15)
