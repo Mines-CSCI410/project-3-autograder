@@ -6,13 +6,20 @@ from os import path
 from gradescope_utils.autograder_utils.decorators import weight, number
 
 class TestBase(unittest.TestCase): 
+    def assertFileContains(self, file, pattern):
+        with open(file, 'r') as f:
+            if not re.search(pattern=pattern, string=f.read()):
+                raise AssertionError(f'Pattern {pattern} not found in {file}!')
+
+    def assertFileNotContain(self, file, pattern):
+        with open(file, 'r') as f:
+            if re.search(pattern=pattern, string=f.read()):
+                raise AssertionError(f'Pattern {pattern} not allowed in {file}!')
+
     def assertModulePasses(self, name):
         if not path.isfile(f'/autograder/source/{name}.v'):
             raise AssertionError(f'{name}.v not found!')
-
-        with open(f'/autograder/source/{name}.v', 'r') as f:
-            if not re.search(pattern=f'module student_{name}', string=f.read()):
-                raise AssertionError(f'Module student_{name} not defined in {name}.v!')
+        self.assertFileContains(f'/autograder/source/{name}.v', f'module student_{name}')
 
         subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', f'/autograder/source/{name}.v'])
 
