@@ -24,10 +24,8 @@ class TestBase(unittest.TestCase):
 
         subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', f'/autograder/grader/tests/dff.v'] + glob.glob('/autograder/source/*.v'))
 
-        ps = subprocess.Popen(['vvp', f'/tmp/{name}_test.vvp'], stdout=subprocess.PIPE)
         out = open(f'/tmp/{name}.out', 'w')
-        subprocess.run(['head', '-n', '-1'], stdin=ps.stdout, stdout=out)
-        ps.wait()
+        subprocess.run(['vvp', f'/tmp/{name}_test.vvp'], stdout=out)
 
         res = subprocess.call(['diff', f'/tmp/{name}.out', f'/autograder/grader/tests/expected-outputs/{name}.cmp', '-qsw', '--strip-trailing-cr'])
         if res != 0:
