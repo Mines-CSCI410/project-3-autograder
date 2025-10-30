@@ -1,6 +1,7 @@
 import re
 import unittest
 import subprocess
+import glob
 from os import path
 
 from gradescope_utils.autograder_utils.decorators import weight, number
@@ -21,7 +22,7 @@ class TestBase(unittest.TestCase):
             raise AssertionError(f'{name}.v not found!')
         self.assertFileContains(f'/autograder/source/{name}.v', f'module student_{name}')
 
-        subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', f'/autograder/source/*.v', f'/autograder/grader/tests/dff.v'])
+        subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', f'/autograder/grader/tests/dff.v'] + glob.glob('/autograder/source/*.v'))
 
         ps = subprocess.Popen(['vvp', f'/tmp/{name}_test.vvp'], stdout=subprocess.PIPE)
         out = open(f'/tmp/{name}.out', 'w')
