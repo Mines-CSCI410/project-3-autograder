@@ -1,19 +1,24 @@
-module dff(input in, output out);
-    reg clock;
+module clock(output reg clock);
     initial begin
         clock = 0;
     end
+
     always begin
         #1 clock = ~clock;
     end
-
-    clock_dff inner(.in(in), .clock(clock), .out(out))
 endmodule
 
-// Licensed under CC-BY-SA, derived from Icarus Verilog Wiki
+module dff(input in, output out);
+    wire clk;
+    clock c (clk);
+    clock_dff inner (in, clk, out);
+endmodule
+
 module clock_dff(input in, input clock, output reg out);
-    // On clock edge, check for reset and latch data
-   always @(posedge clock) begin
-        out <= in;   // Latch the input data
-   end
+    initial begin
+        out = 0;
+    end
+    always @(posedge clock) begin
+        out = in;
+    end
 endmodule

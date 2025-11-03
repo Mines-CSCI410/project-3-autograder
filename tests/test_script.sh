@@ -4,7 +4,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 pushd ${SCRIPT_DIR} &> /dev/null
 
-TESTS=()
+TESTS=(bit register ram8 ram64 ram512 ram4k ram16k pc)
 
 for TEST in ${TESTS[@]};
 do
@@ -15,8 +15,8 @@ do
     }
 
     iverilog -o /tmp/${TEST}_test.vvp ${TEST}_test.v ../*.v dff.v
-    vvp /tmp/${TEST}_test.vvp 2> /dev/null | head -n -1 1> /tmp/${TEST}.out 2> /dev/null
-    diff /tmp/${TEST}.out expected-outputs/${TEST}.cmp -qsw --strip-trailing-cr &> /dev/null && echo "${TEST^^} Test Passed"
+    vvp /tmp/${TEST}_test.vvp 2> /dev/null 1> /tmp/${TEST}.out 2> /dev/null
+    diff /tmp/${TEST}.out expected-outputs/${TEST}.cmp -qsw --strip-trailing-cr &> /dev/null && echo "${TEST^^} Test Passed" || echo "${TEST^^} Test Failed"
 done
 
 popd &> /dev/null
