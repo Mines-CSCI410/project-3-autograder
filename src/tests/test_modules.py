@@ -22,7 +22,7 @@ class TestBase(unittest.TestCase):
             raise AssertionError(f'{name}.v not found!')
         self.assertFileContains(f'/autograder/source/{name}.v', f'module student_{name}')
 
-        subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', f'/autograder/grader/tests/dff.v'] + glob.glob('/autograder/source/*.v'))
+        subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', '-l/autograder/grader/tests/dff.v'] + [f'-l{p}' for p in glob.glob('/autograder/source/*.v')])
 
         out = open(f'/tmp/{name}.out', 'w')
         subprocess.run(['vvp', f'/tmp/{name}_test.vvp'], stdout=out)
@@ -44,30 +44,30 @@ class TestModules(TestBase):
 
     @weight(95/8)
     @number(3)
+    def test_pc(self):
+        self.assertModulePasses('pc')
+
+    @weight(95/8)
+    @number(4)
     def test_ram8(self):
         self.assertModulePasses('ram8')
 
     @weight(95/8)
-    @number(4)
+    @number(5)
     def test_ram64(self):
         self.assertModulePasses('ram64')
 
     @weight(95/8)
-    @number(5)
+    @number(6)
     def test_ram512(self):
         self.assertModulePasses('ram512')
 
     @weight(95/8)
-    @number(6)
+    @number(7)
     def test_ram4k(self):
         self.assertModulePasses('ram4k')
 
     @weight(95/8)
-    @number(7)
+    @number(8)
     def test_ram16k(self):
         self.assertModulePasses('ram16k')
-
-    @weight(95/8)
-    @number(8)
-    def test_pc(self):
-        self.assertModulePasses('pc')

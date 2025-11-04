@@ -4,7 +4,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 pushd ${SCRIPT_DIR} &> /dev/null
 
-TESTS=(bit register ram8 ram64 ram512 ram4k ram16k pc)
+TESTS=(bit register pc ram8 ram64 ram512 ram4k ram16k)
 
 for TEST in ${TESTS[@]};
 do
@@ -13,9 +13,14 @@ do
         echo "${TEST}.v not found"
         continue
     }
+    [[ ! -s ./${TEST}_test.v ]] && {
+        echo "${TEST}_test.v not found"
+        continue
+    }
 
-    iverilog -o /tmp/${TEST}_test.vvp ${TEST}_test.v ../*.v dff.v
-    vvp /tmp/${TEST}_test.vvp 2> /dev/null 1> /tmp/${TEST}.out 2> /dev/null
+    LIB_FILES=$(ls ../*.v | awk '{print "-l " $0}' | xargs)
+    iverilog -o /tmp/${TEST}_test.vvp ${TEST}_test.v ${LIB_FILES} -l dff.v
+    vvp /tmp/${TEST}_test.vvp 2> /dev/null | head -n -1 1> /tmp/${TEST}.out 2> /dev/null
     diff /tmp/${TEST}.out expected-outputs/${TEST}.cmp -qsw --strip-trailing-cr &> /dev/null && echo "${TEST^^} Test Passed" || echo "${TEST^^} Test Failed"
 done
 
