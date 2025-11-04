@@ -22,7 +22,7 @@ class TestBase(unittest.TestCase):
             raise AssertionError(f'{name}.v not found!')
         self.assertFileContains(f'/autograder/source/{name}.v', f'module student_{name}')
 
-        subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', '-l/autograder/grader/tests/dff.v'] + [f'-l{p}' for p in glob.glob('/autograder/source/*.v')])
+        subprocess.run(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', '-l/autograder/grader/tests/dff.v', '-l/autograder/grader/tests/muxlib.v'] + [f'-l{p}' for p in glob.glob('/autograder/source/*.v')])
 
         out = open(f'/tmp/{name}.out', 'w')
         subprocess.run(['vvp', f'/tmp/{name}_test.vvp'], stdout=out)

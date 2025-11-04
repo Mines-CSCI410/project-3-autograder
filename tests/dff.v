@@ -1,3 +1,8 @@
+/*
+ * Copyright Grant Lemons for CSCI410
+ * 2025-11-03
+ */
+
 module clock(output reg clock);
     initial begin
         clock = 0;

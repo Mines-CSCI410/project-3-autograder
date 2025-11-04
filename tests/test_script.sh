@@ -19,7 +19,7 @@ do
     }
 
     LIB_FILES=$(ls ../*.v | awk '{print "-l " $0}' | xargs)
-    iverilog -o /tmp/${TEST}_test.vvp ${TEST}_test.v ${LIB_FILES} -l dff.v
+    iverilog -o /tmp/${TEST}_test.vvp ${TEST}_test.v ${LIB_FILES} -l dff.v -l muxlib.v
     vvp /tmp/${TEST}_test.vvp 2> /dev/null | head -n -1 1> /tmp/${TEST}.out 2> /dev/null
     diff /tmp/${TEST}.out expected-outputs/${TEST}.cmp -qsw --strip-trailing-cr &> /dev/null && echo "${TEST^^} Test Passed" || echo "${TEST^^} Test Failed"
 done
