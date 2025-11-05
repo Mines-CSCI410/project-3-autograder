@@ -13,13 +13,13 @@ module clock(output reg clock);
     end
 endmodule
 
-module dff(input in, output out);
+module dff #(parameter N = 1) (input [N-1:0] in, output [N-1:0] out);
     wire clk;
     clock c (clk);
-    clock_dff inner (in, clk, out);
+    clock_dff #(N) inner (in, clk, out);
 endmodule
 
-module clock_dff(input in, input clock, output reg out);
+module clock_dff #(parameter N = 1) (input [N-1:0] in, input clock, output reg [N-1:0] out);
     initial begin
         out = 0;
     end
