@@ -21,7 +21,7 @@ class TestBase(unittest.TestCase):
         if not path.isfile(f'/autograder/grader/tests/{name}_test.v'):
             raise AssertionError(f'{name}_test.v not found!')
 
-        res = subprocess.call(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', '-l/autograder/grader/tests/dff.v', '-l/autograder/grader/tests/muxlib.v'] + [f'-l{p}' for p in glob.glob('/autograder/source/*.v')])
+        res = subprocess.call(['iverilog', '-o', f'/tmp/{name}_test.vvp', f'/autograder/grader/tests/{name}_test.v', '-l/autograder/grader/tests/dff.v', '-l/autograder/grader/tests/muxlib.v', '-l/autograder/grader/tests/fast_ram.v'] + [f'-l{p}' for p in glob.glob('/autograder/source/*.v')])
         if res != 0:
             raise AssertionError('Unable to build verilog + test script to vvp!')
 
