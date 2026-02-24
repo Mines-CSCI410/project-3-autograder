@@ -4,10 +4,12 @@
  */
 
 module dff #(parameter N = 1) (input [N-1:0] in, output reg [N-1:0] out);
+    reg clock;
     initial begin
+        clock = 0;
         out = 0;
     end
-    always begin
-        #2 out = in;
-    end
+
+    always #1 clock = ~clock;
+    always @(posedge clock) out = in;
 endmodule
