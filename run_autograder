@@ -3,6 +3,6 @@
 cd /autograder/grader
 mkdir /autograder/results
 mkdir /autograder/source
-find /autograder/submission -name '*.v' -not -name '*_test.v' -exec cp {} /autograder/source/ \;
+find /autograder/submission -name '*.v' -not -name '*_test.v' -not -name 'nand.v' -not -name 'muxlib.v' -not -name 'dff.v' -exec cp {} /autograder/source/ \;
 
 uv run src/run_tests.py
